@@ -41,8 +41,8 @@ body {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 20px;
   padding: 30px;
-
-  width: 50vw;
+  width: 65vw;
+  min-width: 300px;
   max-width: 400px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }

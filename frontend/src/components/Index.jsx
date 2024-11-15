@@ -140,7 +140,7 @@ function Index() {
           })}
       </ul>
       {/*    */}
-      <p style={{ textAlign: "center", fontSize: "17px" }}>
+      <div style={{ textAlign: "center", fontSize: "17px" }}>
         <p
           style={{ color: "#ffd700",cursor: "pointer" }}
           onClick={() => {
@@ -151,7 +151,7 @@ function Index() {
           {" "}
           Logged in successfully. Logout
         </p>
-      </p>
+      </div>
       <p id="response-message"></p>
     </div>
   );

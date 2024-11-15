@@ -11,6 +11,6 @@ export const getProtectedData = async (token) => {
       return response.data;
     } catch (error) {
       console.error('Error fetching protected data:', error);
-    //   throw error;  // Re-throw error to handle it in the component
+      throw error;  // Re-throw error to handle it in the component
     }
   };
