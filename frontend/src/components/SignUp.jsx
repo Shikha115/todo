@@ -11,6 +11,7 @@ function SignUp() {
     username:'',
     password:'',
   })
+  const [errorMessage, setErrorMessage] = useState('')
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,15 +19,19 @@ function SignUp() {
     try {
       const response = await axios.post(url.registerUrl, data);
       console.log("post user register", response.data);
-      navigate('/login');
+      if (response.data.status == "failure") {
+        setErrorMessage(response.data.message);
+      } else navigate("/");
     } catch (error) {
       console.error("post user register error", error.response.data);
+      setErrorMessage(error.response.data.message);
     }
   };
 
   return (
     <div id="signup-container">
       <h2>Signup</h2>
+      {errorMessage && <p className="error">{errorMessage}</p>}
       <form id="signup-form">
         <label htmlFor="signup-username">Username:</label>
         <input
@@ -55,7 +60,7 @@ function SignUp() {
       </form>
       <p>
         Already have an account?{" "}
-        <Link to="/login" id="show-signin">
+        <Link to="/" id="show-signin">
           Sign In
         </Link>
       </p>

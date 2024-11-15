@@ -36,7 +36,22 @@ body {
   left: 0px;
   width: 100%;
 }
-
+p.error {
+  margin: 0 0 10px;
+  font-size: 12px;
+  background: red;
+  color: #fff;
+  padding: 5px;
+  border-radius: 4px;
+ 
+  width: max-content;
+}
+form,
+p,
+a,
+div {
+  transition: all .5s ease-in-out;
+}
 .container {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 20px;

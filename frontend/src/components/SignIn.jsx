@@ -11,6 +11,7 @@ function SignIn() {
     username:'',
     password:'',
   })
+  const [errorMessage, setErrorMessage] = useState('')
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,15 +21,17 @@ function SignIn() {
       const response = await axios.post(url.loginUrl, data);
       console.log("post user login", response.data);
       localStorage.setItem('token', response.data.token);
-      navigate('/');
+      navigate('/index');
     } catch (error) {
-      console.error("post user login error", error);
+      console.error("post user login error", error.response.data);
+      setErrorMessage(error.response.data.message);
     }
     
   };
   return (
     <div id="signin-container">
       <h2>Signin</h2>
+      {errorMessage && <p className="error">{errorMessage}</p>}
       <form id="signin-form">
         <label htmlFor="signin-username">Username:</label>
         <input

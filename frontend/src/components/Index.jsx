@@ -145,7 +145,7 @@ function Index() {
           style={{ color: "#ffd700",cursor: "pointer" }}
           onClick={() => {
             localStorage.removeItem("token");
-            navigate("/login");
+            navigate("/");
           }}
         >
           {" "}
