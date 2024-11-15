@@ -16,6 +16,8 @@ const userSchema = new mongoose.Schema({
       ref: "Todo",
     },
   ],
+},{
+  timestamps: true
 });
 
 const User = mongoose.model("User", userSchema);

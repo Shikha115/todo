@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { url } from "../api/url";
+
 
 function Index() {
+  const navigate = useNavigate();
+
   const [data, setData] = useState({
     title: "",
     desp: "",
@@ -10,33 +14,70 @@ function Index() {
   });
   const [todos, setTodos] = useState([]);
 
+  const getAllTodos = async () => {
+    try {
+      const response = await axios.get(url.todoUrl);
+      console.log("get todos", response.data);
+
+      setTodos(response.data.data);
+    } catch (error) {
+      console.error("get todos error", error.response.data);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("handle submit")
+    console.log("handle submit");
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/todos`,
-        data
-      );
-      console.log("post todos", response);
+      const response = await axios.post(url.todoUrl, data);
+      console.log("post todos", response.data.data);
+      //update todos state
+      if (data.title && data.desp) {
+        setTodos((prev) => [...prev, response.data.data]);
+      }
     } catch (error) {
-      console.error("post todos", error);
+      console.error("post todos error", error.response.data);
+    }
+  };
+
+  const handleUpdate = async (value, id) => {
+    console.log("handle update");
+    try {
+      const response = await axios.patch(url.todoUrl, {
+        isCompleted: value,
+        id,
+      });
+      console.log("patch todos", response.data.data);
+      //update todos state
+      const arr = todos.map((item) => {
+        item._id === id && (item.isCompleted = value);
+        return item;
+      });
+      setTodos(arr);
+    } catch (error) {
+      console.error("patch todos error", error.response.data);
+    }
+  };
+
+  const deleteATodo = async (id) => {
+    console.log("handle delete: ", id);
+    try {
+      const response = await axios.delete(url.todoUrl, {
+        data: { id },
+      });
+      console.log("delete todos", response.data);
+
+      //update todos state
+      const arr = todos.filter((item) => item._id !== id);
+      setTodos(arr);
+    } catch (error) {
+      console.error("delete todos error", error.response.data);
     }
   };
 
   useEffect(() => {
     console.log("API URL:", import.meta.env.VITE_API_URL);
-
-    (async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/todos`
-        );
-        console.log("get todos", response);
-      } catch (error) {
-        console.error("get todos", error);
-      }
-    })();
+    getAllTodos();
   }, []);
 
   return (
@@ -73,21 +114,43 @@ function Index() {
           todos.map((item, i) => {
             return (
               <li key={i}>
-                <input
-                  type="checkbox"
-                  checked={item.isCompleted}
-                  onChange={(e) => handleUpdate(e.target.checked, item._id)}
-                />
-                <span>{item.title}</span>
-                <span>{item.desp}</span>
-                <button>Delete</button>
+                <div>
+                  <input
+                    id={`checkItem${i}`}
+                    type="checkbox"
+                    defaultChecked={item.isCompleted}
+                    onChange={(e) => handleUpdate(e.target.checked, item._id)}
+                    style={{ display: "none" }}
+                  />
+                  <label
+                    htmlFor={`checkItem${i}`}
+                    className={item.isCompleted ? "active" : ""}
+                  >
+                    <span>
+                      <b>{item.title}:</b>
+                    </span>
+                    <span>
+                      <small>{item.desp}</small>
+                    </span>
+                  </label>
+                </div>
+                <button onClick={() => deleteATodo(item._id)}>Delete</button>
               </li>
             );
           })}
       </ul>
       {/*    */}
       <p style={{ textAlign: "center", fontSize: "17px" }}>
-        <Link to="#">Logged in successfully. Logout</Link>
+        <p
+          style={{ color: "#ffd700",cursor: "pointer" }}
+          onClick={() => {
+            localStorage.removeItem("token");
+            navigate("/login");
+          }}
+        >
+          {" "}
+          Logged in successfully. Logout
+        </p>
       </p>
       <p id="response-message"></p>
     </div>

@@ -25,7 +25,7 @@ body {
   overflow: hidden;
 }
 
-.title{
+.title {
   text-align: center;
   color: rgb(255, 255, 255);
   font-family: fantasy;
@@ -127,20 +127,25 @@ a:hover {
   border-radius: 10px;
   margin-bottom: 10px;
 }
-
-#todo-list li span {
-  flex-grow: 1;
+#todo-list li input,#todo-list li label {
+  cursor: pointer;
+}
+#todo-list li label.active {
+  text-decoration: line-through;
+}
+#todo-list li > div {
+  display: flex;
+  gap: 5px;
+}
+#todo-list li span:not(:last-child) {
+  margin-right: 10px;
+  text-transform: capitalize;
 }
 
 #todo-list li button {
-  padding: 6px 12px;
-  background-color: #fff;
-  transition: background-color 0.3s;
-  color: black;
-}
-
-#todo-list li button:hover {
-  background-color: #e0e0e0;
+  padding: 6px 10px;
+  border-radius: 3px;
+  font-size: 10px;
 }
 
 #response-message a {

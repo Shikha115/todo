@@ -15,12 +15,18 @@ dbConnection(process.env.DB_URL);
 
 //middlewares
 app.use(express.json());
-app.use(cors()); //corsOptions
+app.use(cors(corsOptions)); //
 app.use(logger);
 
 //routes
 app.use("/", require("./routes/user"));
 app.use("/todos", require("./routes/todo"));
+app.get("*", (req, res) => {
+  res.status(404).json({ message: "Page Not Found" });
+});
+
+
+
 
 app.use(errorLog);
 
@@ -33,4 +39,3 @@ mongoose.connection.on("open", () => {
 mongoose.connection.on("error", (err) => {
   console.log("Database connection error", err);
 });
-
