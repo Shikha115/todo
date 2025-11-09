@@ -2,24 +2,28 @@ const express = require("express");
 const asyncHandler = require("express-async-handler");
 const Todo = require("../models/Todo");
 const { TodoSchema, TodoID } = require("../config/types");
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 // ========== get all todo ==========
 const getAlltodo = asyncHandler(async (req, res) => {
-  const todo = await Todo.find({}).lean();
-  if (!todo.length) {
+  const todo = await Todo.find({})
+    .sort({
+      createdAt: -1,
+    })
+    .lean();
+  if (!todo) {
     return res
       .status(404)
       .json({ status: "failure", message: "No todos found" });
   }
   res
     .status(200)
-    .json({ status: "success", msg: "todo retrieved", data: todo });
+    .json({ status: "success", message: "todo retrieved", data: todo });
 });
 
 // ========== create a todo ==========
 const createAtodo = asyncHandler(async (req, res) => {
-  const { title, desp, isCompleted } = req.body;
+  const { title, desp, isCompleted = false } = req.body;
   const parsed = TodoSchema.safeParse(req.body);
   if (!parsed.success) {
     return res
@@ -36,14 +40,16 @@ const createAtodo = asyncHandler(async (req, res) => {
     isCompleted,
   });
   await newTodo.save();
-  res.status(201).json({ status: "success",msg:"todo created", data: newTodo });
+  res
+    .status(201)
+    .json({ status: "success", msg: "todo created", data: newTodo });
 });
 
 // ========== update a todo ==========
 const updateAtodo = asyncHandler(async (req, res) => {
-  const {isCompleted, id} = req.body;
+  const { isCompleted, id } = req.body;
   const todo = await Todo.findById(id);
-  if(typeof isCompleted !== 'boolean'){
+  if (typeof isCompleted !== "boolean") {
     return res.status(400).json({ message: "Invalid input data type" });
   }
   if (!todo) {
@@ -51,7 +57,7 @@ const updateAtodo = asyncHandler(async (req, res) => {
   }
   todo.isCompleted = isCompleted;
   await todo.save();
-  res.status(200).json({ status: "success",msg:"todo updated", data: todo });
+  res.status(200).json({ status: "success", msg: "todo updated", data: todo });
 });
 
 // ========== delete a todo ==========
@@ -67,7 +73,6 @@ const deleteAtodo = asyncHandler(async (req, res) => {
   if (result.deletedCount === 0) {
     return res.status(404).json({ message: "Todo not found" });
   }
-
 
   res.status(200).json({ status: "success", msg: "todo deleted", data: todo });
 });
