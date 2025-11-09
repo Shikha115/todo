@@ -19,8 +19,8 @@ app.use(cors(corsOptions)); //
 app.use(logger);
 
 //routes
-app.use("/", require("./routes/user"));
-app.use("/todos", require("./routes/todo"));
+app.use("/", require("./routes/user.route"));
+app.use("/todos", require("./routes/todo.route"));
 app.get("*", (req, res) => {
   res.status(404).json({ message: "Page Not Found" });
 });

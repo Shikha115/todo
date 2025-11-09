@@ -1,7 +1,7 @@
-import asyncHandler from "express-async-handler";
-import Todo from "../models/Todo";
-import { TodoSchema, TodoID } from "../config/types";
-import mongoose from "mongoose";
+const asyncHandler = require("express-async-handler");
+const Todo = require("../models/todo.model.js");
+const { TodoSchema, TodoID } = require("../config/types.js");
+const mongoose = require("mongoose");
 
 // ========== get all todo ==========
 const getAlltodo = asyncHandler(async (req, res) => {

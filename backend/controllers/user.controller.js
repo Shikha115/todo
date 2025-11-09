@@ -1,7 +1,7 @@
-import asyncHandler from "express-async-handler";
-import { genSaltSync, hashSync, compareSync } from "bcrypt";
-import jwt from "jsonwebtoken";
-import User from "../models/user";
+const asyncHandler = require("express-async-handler");
+const { genSaltSync, hashSync, compareSync } = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const User = require("../models/user.model.js");
 
 //register user
 const register = asyncHandler(async (req, res) => {
@@ -43,4 +43,4 @@ const login = asyncHandler(async (req, res) => {
   res.status(200).json({ status: "success", message: "User logged in", token });
 });
 
-export default { register, login };
+module.exports = { register, login };
