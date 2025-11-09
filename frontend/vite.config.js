@@ -4,6 +4,7 @@ import react from "@vitejs/plugin-react";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  base: "/",
   server: {
     host: "0.0.0.0",
     port: process.env.PORT || 5173,
@@ -12,5 +13,9 @@ export default defineConfig({
     host: "0.0.0.0",
     port: process.env.PORT || 4173,
     allowedHosts: ["taskify-s4bt.onrender.com"],
+  },
+  build: {
+    outDir: "dist",
+    assetsDir: "assets",
   },
 });
