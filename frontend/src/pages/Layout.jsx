@@ -6,7 +6,7 @@ function Layout() {
   const { theme, toggleTheme } = useThemeStore();
 
   return (
-    <section className="page" style={{ position: "relative" }}>
+    <section className="page w-full" style={{ position: "relative" }}>
       <h1 className="title">
         <b>👉🏻 Taskify...</b>
       </h1>
